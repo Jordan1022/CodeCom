@@ -31,23 +31,36 @@ export default {
     };
   },
   methods: {
-    sendMessage() {
+    async sendMessage() {
       if (this.newMessage.trim() === "") {
         return;
       }
-      // Add the user's message to the chat
+
       this.messages.push({ sender: "user", content: this.newMessage });
 
-      // Call OpenAI API or serverless function to get a response
-      // For now, let's simulate a response
-      setTimeout(() => {
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: this.newMessage }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Server error");
+        }
+
+        const data = await response.json();
+        this.messages.push({ sender: "ai", content: data.reply });
+      } catch (error) {
+        console.error("Error:", error);
         this.messages.push({
           sender: "ai",
-          content: `AI Response to "${this.newMessage}"`,
+          content: "Error getting response.",
         });
-      }, 1000);
+      }
 
-      // Clear the input field
       this.newMessage = "";
     },
   },

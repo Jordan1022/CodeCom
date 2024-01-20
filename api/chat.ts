@@ -1,37 +1,23 @@
-// /api/chat.js
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import OpenAI from 'openai';
 
-//åconst OpenAI = require('openai-api');
-//åconst OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-// api/serverless.ts
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-import { VercelRequest, VercelResponse } from '@vercel/node';
+export default async function handler(
+    request: VercelRequest,
+    response: VercelResponse
+) {
+    try {
+        const userMessage = request.body.message;
 
-export default (request: VercelRequest, response: VercelResponse) => {
-    response.status(200).json({
-        body: request.body,
-        query: request.query,
-        cookies: request.cookies,
-    });
-};
+        const completion = await openai.chat.completions.create({
+            messages: userMessage,
+            model: 'gpt-3.5-turbo',
+        });
 
-// const openai = new OpenAI(OPENAI_API_KEY);
-
-// export default async (req, res) => {
-//     const { message } = req.body;
-
-//     try {
-//         const gptResponse = await openai.complete({
-//             engine: 'davinci',
-//             prompt: message,
-//             maxTokens: 150,
-//             temperature: 0.7,
-//             topP: 1,
-//             frequencyPenalty: 0,
-//             presencePenalty: 0
-//         });
-
-//         res.status(200).json({ reply: gptResponse.data.choices[0].text.trim() });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// };
+        response.status(200).json({ reply: completion.choices[0].message.content });
+    } catch (error) {
+        console.error('Error calling OpenAI:', error);
+        response.status(500).json({ error: 'Error processing your request' });
+    }
+}

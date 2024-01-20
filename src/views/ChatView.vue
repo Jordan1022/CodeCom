@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+  <div class="chat">
     <h1>{{ msg }}</h1>
     <h3>Your Comrade in Code</h3>
     <ul>
@@ -13,16 +13,19 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Register",
+  name: "Chat",
   props: {},
   data() {
     return {
-      msg: "Register",
+      msg: "Chat",
     };
   },
 });
 </script>
+
+<style>
+</style>

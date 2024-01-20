@@ -4,15 +4,13 @@
     <h3>Your Comrade in Code</h3>
     <ul>
       <li>
-        <a
-          href="https://vitejs.dev/guide/features.html"
-          target="_blank"
-          rel="noopener"
-          >Register</a
-        >
+        <router-link to="/Register">Register</router-link>
       </li>
       <li>
         <a href="https://v3.vuejs.org/" target="_blank" rel="noopener">Login</a>
+      </li>
+      <li>
+        <router-link to="/Chat">Chat</router-link>
       </li>
     </ul>
   </div>

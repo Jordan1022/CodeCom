@@ -1,4 +1,4 @@
-# codecomrade-app
+# comradcopyu
 
 ## Project setup
 ```
